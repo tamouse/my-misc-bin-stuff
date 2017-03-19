@@ -39,8 +39,52 @@ def get_image_path(dir=Dir.pwd)
   Pathname.new(dir).expand_path().to_s.split("/").drop(4).join("/") + ?/
 end
 
+def caption(fb)
+  fb.
+    scan(/\w+/).
+    reject{|w| w.match(/\A\d+\z/)}.
+    map(&:capitalize).
+    join(" ")
+end
+
 def yamlize(galleries=DEFAULTS, start=Dir.pwd)
   {
+    "materials" => {
+      "Paper" => [
+        "Arches 140lb cold press, 9x12"
+      ],
+      "Paint" => [
+        "Aureolin (Cobalt Yellow)",
+        "Quin Burnt Orange",
+        "French Ultramarine Blue",
+        "Quin Gold",
+        "Cobalt Blue",
+        "Sap Green",
+        "Phthalo Green",
+        "Phthalo Blue",
+        "Phthalo Turquoise",
+        "Permanent Rose",
+        "Permanent Alizerin Crimson",
+        "Quin Magenta",
+        "Quin Scarlet",
+        "Quin Burnt Scarlet",
+        "Quin Violet",
+        "Cobalt Blue Violet",
+        "Raw Sienna",
+        "Monte Amiato",
+        "Verditer Blue",
+        "Verditer Green",
+        "Chromatic Black made from Quin Burnt Orange and French Ultramarine",
+        "Chromatic Black made from Paynes Grey and Cobalt Red Light",
+        "Neutral Tint"
+      ],
+      "Brushes" => [
+        "Dreamcatcher #10 Round",
+        "Dreamcatcher #4 Round",
+        "1 inch flat",
+        "Kalinsky Sable #1 Round"
+      ]
+    },
     "gallery" => {
       "path" => get_image_path(start),
       "images" => imagefiles.map do |f|
@@ -50,7 +94,7 @@ def yamlize(galleries=DEFAULTS, start=Dir.pwd)
           "gallery" => "gallery/#{fb}.#{galleries[:gallery][:format]}",
           "web" => "webs/#{fb}.#{galleries[:web][:format]}",
           "thumb" => "thumbs/#{fb}.#{galleries[:thumbs][:format]}",
-          "caption" => "#{fb.split(/[-_]/).map(&:capitalize).join(" ")}",
+          "caption" => caption(fb),
           "description" => "\ndescription\n\n"
         }
       end
