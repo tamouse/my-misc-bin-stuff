@@ -6,7 +6,7 @@
 # - web: 1024 horizontal
 
 require 'fileutils'
-require 'yaml'
+require 'json'
 require 'pathname'
 
 DEFAULTS = {
@@ -16,11 +16,11 @@ DEFAULTS = {
 }
 
 def imagefiles(start=Dir.pwd)
-  @imagefiles ||= Dir[File.join(start),'*'].select{|f| f =~ /\.(jpe?g|png|gif)$/ }
+  @imagefiles ||= Dir[File.join(start),'*'].select{|f| f =~ /\.(jpe?g|png|gif)$/ }.sort
 end
 
-def yamlfile(start=Dir.pwd)
-  Pathname.new(start).split.last.to_s + '.yml'
+def datafile()
+  Pathname.new("data.json")
 end
 
 def process(dir, geom, format, quality, options, start='.')
@@ -47,59 +47,21 @@ def caption(fb)
     join(" ")
 end
 
-def yamlize(galleries=DEFAULTS, start=Dir.pwd)
+def hashize(galleries=DEFAULTS, start=Dir.pwd)
   {
-    "materials" => {
-      "Paper" => [
-        "Arches 140lb cold press, 9x12"
-      ],
-      "Paint" => [
-        "Aureolin (Cobalt Yellow)",
-        "Quin Burnt Orange",
-        "French Ultramarine Blue",
-        "Quin Gold",
-        "Cobalt Blue",
-        "Sap Green",
-        "Phthalo Green",
-        "Phthalo Blue",
-        "Phthalo Turquoise",
-        "Permanent Rose",
-        "Permanent Alizerin Crimson",
-        "Quin Magenta",
-        "Quin Scarlet",
-        "Quin Burnt Scarlet",
-        "Quin Violet",
-        "Cobalt Blue Violet",
-        "Raw Sienna",
-        "Monte Amiato",
-        "Verditer Blue",
-        "Verditer Green",
-        "Chromatic Black made from Quin Burnt Orange and French Ultramarine",
-        "Chromatic Black made from Paynes Grey and Cobalt Red Light",
-        "Neutral Tint"
-      ],
-      "Brushes" => [
-        "Dreamcatcher #10 Round",
-        "Dreamcatcher #4 Round",
-        "1 inch flat",
-        "Kalinsky Sable #1 Round"
-      ]
-    },
-    "gallery" => {
-      "path" => get_image_path(start),
-      "images" => imagefiles.map do |f|
-        fb = File.basename(f, '.*')
-        {
-          "fullsize" => f,
-          "gallery" => "gallery/#{fb}.#{galleries[:gallery][:format]}",
-          "web" => "webs/#{fb}.#{galleries[:web][:format]}",
-          "thumb" => "thumbs/#{fb}.#{galleries[:thumbs][:format]}",
-          "caption" => caption(fb),
-          "description" => "\ndescription\n\n"
-        }
-      end
-    }
-  }.to_yaml
+    "path" => get_image_path(start),
+    "images" => imagefiles.map do |f|
+      fb = File.basename(f, '.*')
+      {
+        "fullsize" => f,
+        "gallery" => "gallery/#{fb}.#{galleries[:gallery][:format]}",
+        "web" => "webs/#{fb}.#{galleries[:web][:format]}",
+        "thumb" => "thumbs/#{fb}.#{galleries[:thumbs][:format]}",
+        "caption" => caption(fb),
+        "description" => "description"
+      }
+    end
+  }
 end
 
 def main(galleries=DEFAULTS, start=Dir.pwd)
@@ -109,8 +71,8 @@ def main(galleries=DEFAULTS, start=Dir.pwd)
     process(options[:dir], options[:geom], options[:format], options[:quality], options[:options], start)
     puts "done\n"
   end
-  puts "\nCreating yaml entry"
-  File.write(yamlfile, yamlize)
+  puts "\nCreating data file"
+  File.write(datafile, JSON.pretty_generate(hashize))
 end
 
 main()

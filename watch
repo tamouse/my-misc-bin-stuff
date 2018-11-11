@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+/*
+ * File system watcher script based on node-watch
+ */
+
+require('/usr/local/lib/node_modules/epipebomb')();
+var watcher = require('/usr/local/lib/node_modules/node-watch')(
+  process.argv[2] || './',
+  { recursive: true },
+  function (evt, filename) {
+    console.log(filename);
+  });
+process.on('SIGINT', watcher.close);
