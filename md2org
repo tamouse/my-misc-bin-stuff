@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'time'
+require 'yaml'
+require 'logger'
+require 'open3'
+
+L = Logger.new(STDOUT)
+L.level = Logger::INFO
+
+def convert(markdown)
+  (_, frontmatter, body) = markdown.split("---\n")
+  yaml = YAML.safe_load(frontmatter)
+  title = yaml['title']
+  date = Time.parse(yaml['date']).iso8601
+  fenced = convert_highlights(body)
+  pandoc(intermediate(title, date, fenced))
+end
+
+def convert_highlights(body)
+  body
+    .gsub(/{% highlight (.*)%}/, '``` \\1')
+    .gsub(/{% endhighlight %}/, '```')
+end
+
+def intermediate(title, date, fenced)
+  <<~FRONTMATTER
+    # #{title}
+
+    - Time-stamp: <>
+    - capture_date: #{date}
+
+    #{fenced}
+  FRONTMATTER
+end
+
+def pandoc(input)
+  cmd = 'pandoc -s --wrap=none -f markdown -t org'
+  org, status = Open3.capture2(cmd, stdin_data: input)
+  L.error("Error converting file: #{status}") if status != 0
+  org
+end
+
+ARGV.each do |md_file|
+  org_file = File.basename(md_file, '.*') + '.org'
+  File.write(org_file, convert(File.read(md_file)))
+  L.info("#{md_file} converted to #{org_file}")
+end
