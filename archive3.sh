@@ -34,10 +34,14 @@
 #     $ cd ~/GoogleDrive/
 #     $ archive3.sh Pictures/MyPhotos/nikond5000/
 #
-# This is will copy to the same directory path on the various spaces.
+# This will copy to the same directory path on the various spaces.
+#
+# TODO
+#
+# Figure out how to automate this somehow without causing a huge drag on the system and network.
 
-: ${MY_BOOK:="/Volumes/My Book 4TB/"}
-: ${SEAGATE:="/Volumes/Seagate 4TB/"}
+: ${MY_BOOK:="/Volumes/My Book 4TB"}
+: ${SEAGATE:="/Volumes/Seagate 4TB"}
 : ${TT_ARCHIVE:="s3://tt-archive"}
 
 if [ ! -d "$1" ] ; then
@@ -45,9 +49,9 @@ if [ ! -d "$1" ] ; then
     exit -1
 fi
 
-EXCLUDES_PATH=$HOME/.rsync-excludes
+EXCLUDES_PATH="$HOME/.rsync-excludes"
 RSYNC=`which rsync`
-RSYNC_OPTS="-avz --progress --exclude-from=$EXCLUDES_PATH"
+RSYNC_OPTS="-avz --exclude-from=$EXCLUDES_PATH"
 
 $RSYNC $RSYNC_OPTS "$1" "$MY_BOOK/$1"
 $RSYNC $RSYNC_OPTS "$1" "$SEAGATE/$1"
