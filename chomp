@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby -n
+# chomp the whitespace off the end of an input
+
+print $_.chomp
