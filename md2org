@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+## Markdown to Org-mode
+#
+# does a rather poor job of converting a markdown file with frontmatter (as for JekyllRB
+# or Gatsby) to an org-mode file. Really just written to save some drudge-worthy
+# repetitive editing.
+
 require 'time'
 require 'yaml'
 require 'logger'

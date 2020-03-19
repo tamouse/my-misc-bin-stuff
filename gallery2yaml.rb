@@ -20,6 +20,12 @@
 #
 #         Yay.
 #
+# WHY DID I WRITE THIS?
+#
+# it was at one point to make my life easier when i was creating an art blog using
+# jekyllrb. Turns out that's really too much work after all. But this still
+# exists. There's a lot of overlap between this and the ./convert_images.rb script,
+# too. (like a *lot*).
 
 require 'yaml'
 require 'pathname'

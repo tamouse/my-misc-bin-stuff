@@ -1,4 +1,11 @@
 #!/usr/bin/env ruby -n
 # chomp the whitespace off the end of an input
+#
+# Use it like so:
+#
+#    $ which ls | ~/bin/chomp | pbcopy
+#
+# so you can paste in the path from which without that pesky newline.
+# this is really more work that it's worth in most cases. :rofl:
 
 print $_.chomp

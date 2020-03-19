@@ -3,6 +3,18 @@
 # Convert images by putting them into a subdirectory, such making a collection of
 # thumbnails for a gallery.
 
+# SYNOPSIS
+#
+#     $ ~/bin/convert_images.rb -h
+#
+# Returns the options and usage info
+#
+# Generating thumbnails from a set of images is pretty amusing. See the imagemagick.org documentation for more details, but the command to do this looks something like:
+#
+#     $ mkdir -p dest && mogrify -path dest -format gif -thumbnail 200x200 -gravity center -extent 200x200 image.jpg
+#
+# I don't recall where I found that little riff, maybe on commandline-fu.com
+
 require "optparse"
 require "awesome_print"
 require "fileutils"

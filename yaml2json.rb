@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+# Stupid ruby tricks, converting between yaml and json, really not that interesting
+
 require "yaml"
 require "json"
 require "pathname"
