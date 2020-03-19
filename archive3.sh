@@ -53,11 +53,17 @@ EXCLUDES_PATH="$HOME/.rsync-excludes"
 RSYNC=`which rsync`
 RSYNC_OPTS="-avz --exclude-from=$EXCLUDES_PATH"
 
+echo
+echo "Backing up to $MY_BOOK"
 $RSYNC $RSYNC_OPTS "$1" "$MY_BOOK/$1"
+echo
+echo "Backing up to $SEAGATE"
 $RSYNC $RSYNC_OPTS "$1" "$SEAGATE/$1"
 
-S3SYNC_CMD=`which s3cmd`
-S3EXCLUDES_PATH="$HOME/.s3sync-excludes"
-S3SYNC_OPTS="--recursive --skip-existing --rexclude-from=$S3EXCLUDES_PATH sync"
+# NOTE: SWITCHING TO USE AWS INSTEAD OF S3CMD:
+S3SYNC_CMD=`which aws`
+S3SYNC_OPTS=' --exclude .git --exclude "_*" '
 
-$S3SYNC_CMD $S3SYNC_OPTS "$1" "$TT_ARCHIVE/$1"
+echo
+echo "Backing up to S3"
+$S3SYNC_CMD s3 sync "$1" "$TT_ARCHIVE/$1" $S3SYNC_OPTS 
