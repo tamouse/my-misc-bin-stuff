@@ -6,12 +6,14 @@
 
 require 'curb'
 require 'nokogiri'
+require 'pry'
 
 def extract(url)
   http = Curl::Easy.perform(url)
   html = http.body_str
   doc = Nokogiri::HTML.parse(html)
-  doc.css('.js-tweet-text-container').text
+  binding.pry
+  doc.css('article[role=article]').text
 end
 
 ARGV.each do |arg|

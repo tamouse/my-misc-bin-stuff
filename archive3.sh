@@ -18,7 +18,8 @@
 # 2. /Volumes/Seagate 4TB/
 # 3. s3://tt-archive
 #
-# The way the arhicves are set up should mirror the tree from the specified directory down. To use this, you'll need to `cd` to the **PARENT** directory to issue the command.
+# The way the arhicves are set up should mirror the tree from the specified directory
+# down. To use this, you'll need to `cd` to the **PARENT** directory to issue the command.
 #
 # EXAMPLES
 #

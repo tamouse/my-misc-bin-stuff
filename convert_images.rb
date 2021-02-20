@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
+# Frozen-string-literal: true
 
-# Convert images by putting them into a subdirectory, such making a collection of
-# thumbnails for a gallery.
+# Convert images by putting them into a subdirectory, such making a collection
+# of thumbnails for a gallery.
 
 # SYNOPSIS
 #
@@ -9,7 +10,8 @@
 #
 # Returns the options and usage info
 #
-# Generating thumbnails from a set of images is pretty amusing. See the imagemagick.org documentation for more details, but the command to do this looks something like:
+# Generating thumbnails from a set of images is pretty amusing. See the imagemagick.org
+# documentation for more details, but the command to do this looks something like:
 #
 #     $ mkdir -p dest && mogrify -path dest -format gif -thumbnail 200x200 -gravity center -extent 200x200 image.jpg
 #
