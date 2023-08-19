@@ -14,8 +14,8 @@
 #
 # The spaces currently consist of the following paths:
 #
-# 1. /Volumes/My Book 4TB/
-# 2. /Volumes/Seagate 4TB/
+# 1. ~~/Volumes/My Book 4TB/~~ DEAD
+# 2. ~~/Volumes/Seagate 4TB/~~ DEAD
 # 3. s3://tt-archive
 #
 # The way the arhicves are set up should mirror the tree from the specified directory
@@ -39,10 +39,8 @@
 #
 # TODO
 #
-# Figure out how to automate this somehow without causing a huge drag on the system and network.
+# - [ ] Figure out how to automate this somehow without causing a huge drag on the system and network.
 
-: ${MY_BOOK:="/Volumes/My Book 4TB"}
-: ${SEAGATE:="/Volumes/Seagate 4TB"}
 : ${TT_ARCHIVE:="s3://tt-archive"}
 
 if [ ! -d "$1" ] ; then
@@ -50,21 +48,28 @@ if [ ! -d "$1" ] ; then
     exit -1
 fi
 
-EXCLUDES_PATH="$HOME/.rsync-excludes"
-RSYNC=`which rsync`
-RSYNC_OPTS="-avz --exclude-from=$EXCLUDES_PATH"
-
-echo
-echo "Backing up to $MY_BOOK"
-$RSYNC $RSYNC_OPTS "$1" "$MY_BOOK/$1"
-echo
-echo "Backing up to $SEAGATE"
-$RSYNC $RSYNC_OPTS "$1" "$SEAGATE/$1"
-
 # NOTE: SWITCHING TO USE AWS INSTEAD OF S3CMD:
-S3SYNC_CMD=`which aws`
-S3SYNC_OPTS=' --exclude .git --exclude "_*" '
-
 echo
 echo "Backing up to S3"
-$S3SYNC_CMD s3 sync "$1" "$TT_ARCHIVE/$1" $S3SYNC_OPTS 
+aws s3 sync "$1" "$TT_ARCHIVE/$1" \
+	    --recursive \
+	    --exclude ".git/*" \
+	    --exclude ".DS_Store" \
+	    --exclude ".fseventsd/*" \
+	    --exclude ".Spotlight*/*" \
+	    --exclude ".idea/*" \
+	    --exclude ".localized" \
+	    --exclude ".local" \
+	    --exclude ".sass-cache/*" \
+	    --exclude "log/*.log" \
+	    --exclude "tmp/*" \
+	    --exclude ".bundle/*" \
+	    --exclude "#*#" \
+	    --exclude ".#*" \
+	    --exclude ".Trashes/*" \
+	    --exclude "node_modules/*" \
+	    --exclude "bower_components/*" \
+	    --exclude "*~" \
+	    --exclude "*_flymake.*"
+
+
