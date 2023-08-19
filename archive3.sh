@@ -52,7 +52,6 @@ fi
 echo
 echo "Backing up to S3"
 aws s3 sync "$1" "$TT_ARCHIVE/$1" \
-	    --recursive \
 	    --exclude ".git/*" \
 	    --exclude ".DS_Store" \
 	    --exclude ".fseventsd/*" \
