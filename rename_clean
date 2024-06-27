@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+# freeze-string-literals: true
+
+def rename_basename(old)
+  dir = File.dirname(old)
+  base = File.basename(old).downcase.strip.gsub(/[^[:alnum:]]+/, @separator)
+  [dir, base].join(File::SEPARATOR)
+end
+
+@separator='_'
+
+while ARGV[0].start_with?('-')
+  switch = ARGV.pop
+  case switch
+  when '-s'; @separator=ARGV.pop[0];
+  else
+    ; # Do nothing
+  end
+end
+
+ARGV.each do |old|
+  new=rename_basename(old)
+  puts "Renamving #{old} => #{new}"
+  File.rename(old, new)
+end
