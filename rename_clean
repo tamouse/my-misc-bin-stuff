@@ -3,16 +3,21 @@
 
 def rename_basename(old)
   dir = File.dirname(old)
-  base = File.basename(old).downcase.strip.gsub(/[^[:alnum:]]+/, @separator)
+  ext = File.extname(old)
+  base = File.basename(old, ext)
+  base = base.downcase.strip.gsub(/[^[:alnum:]]+/, @separator)
+  base = [base, ext].join
   [dir, base].join(File::SEPARATOR)
 end
 
 @separator='_'
 
 while ARGV[0].start_with?('-')
-  switch = ARGV.pop
+  switch = ARGV.shift
   case switch
-  when '-s'; @separator=ARGV.pop[0];
+  when '-s'
+    sep=ARGV.shift
+    @separator=sep[0] if sep != nil
   else
     ; # Do nothing
   end
@@ -20,6 +25,6 @@ end
 
 ARGV.each do |old|
   new=rename_basename(old)
-  puts "Renamving #{old} => #{new}"
+  puts "Renaming #{old} => #{new} using #{@separator}"
   File.rename(old, new)
 end

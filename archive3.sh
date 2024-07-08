@@ -52,23 +52,23 @@ fi
 echo
 echo "Backing up to S3"
 aws s3 sync "$1" "$TT_ARCHIVE/$1" \
-	    --exclude ".git/*" \
-	    --exclude ".DS_Store" \
-	    --exclude ".fseventsd/*" \
-	    --exclude ".Spotlight*/*" \
-	    --exclude ".idea/*" \
-	    --exclude ".localized" \
-	    --exclude ".local" \
-	    --exclude ".sass-cache/*" \
-	    --exclude "log/*.log" \
-	    --exclude "tmp/*" \
-	    --exclude ".bundle/*" \
-	    --exclude "#*#" \
-	    --exclude ".#*" \
-	    --exclude ".Trashes/*" \
-	    --exclude "node_modules/*" \
-	    --exclude "bower_components/*" \
+	    --exclude "*/.git/*" \
+	    --exclude "*.DS_S*" \
+	    --exclude "*/.fseventsd/*" \
+	    --exclude "*/.Spotlight*/*" \
+	    --exclude "*/.idea/*" \
+	    --exclude "*/.localized" \
+	    --exclude "*/.local" \
+	    --exclude "*/.sass-cache/*" \
+	    --exclude "*/log/*.log" \
+	    --exclude "*/tmp/*" \
+	    --exclude "*/.bundle/*" \
+	    --exclude "*/*#*#" \
+	    --exclude "*/.#*" \
+	    --exclude "*/.Trashes/*" \
+	    --exclude "*/node_modules/*" \
+	    --exclude "*/bower_components/*" \
 	    --exclude "*~" \
-	    --exclude "*_flymake.*"
-
-
+	    --exclude "*_flymake.*" \
+	    --exclude "logseq/bak/*" \
+	    --exclude "logseq/.recycle"
