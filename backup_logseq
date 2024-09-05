@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+: "${HOME:=/Users/tamouse}"
+LOGSEQ_DIR="$HOME/Logseq.local"
+EXCLUSIONS=""
+[ -r $LOGSEQ_DIR/.rsync_exclusions ] && EXCLUSIONS="--exclude-from=$LOGSEQ_DIR/.rsync_exclusions"
+RSYNC_OPTS="-avz --delete"
+RSYNC_CMD=`which rsync`
+DEST_DIR="/Volumes/Keybase/private/tamouse_/Logseq.backup"
+
+mkdir -p $DEST_DIR
+
+$RSYNC_CMD $RSYNC_OPTS $EXCLUSIONS $LOGSEQ_DIR/ $DEST_DIR/
