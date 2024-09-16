@@ -8,7 +8,7 @@
 mkdir -p IG                     # Make the directory if it doesn't exist
 rm -f IG/*                      # Clear it out if it exists.
 
-for f in *.{jpe?g,png,tiff?}
+for f in "$@"
 do
     # This is the magick! :joy:
     #
