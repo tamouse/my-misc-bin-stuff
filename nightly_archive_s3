@@ -1,0 +1,13 @@
+#!/bin/sh
+
+AWS_CMD="/usr/local/bin/aws"
+AWS_OPTS="s3 sync --dryrun "
+BUCKET="s3://tt-archive"
+ICLOUD_DIR="$HOME/iCloud/"
+BACKUP_LIST="Books Documents/4-Archive Pictures/Art "
+
+cd $ICLOUD_DIR; pwd; ls -la
+
+for dir in $BACKUP_LIST; do
+    $AWS_CMD $AWS_OPTS $dir "$BUCKET/$dir"
+done
